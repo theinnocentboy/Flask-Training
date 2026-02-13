@@ -1,5 +1,6 @@
 from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import desc 
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"]="sqlite:///project.db"
@@ -28,14 +29,15 @@ def show():
         print(items.id,":",items.name,":",items.role)
     print(user)
     return f"Data is in console"
-@app.route("/part/<identity1>/<identity2>")
+
+@app.route("/filter/<identity1>/<identity2>")
 def particular(identity1,identity2):
     usr = User.query.filter_by(id = identity1).first()
     #for primary key we dont use filterby function, we use get function and we dont use primary key name in the get function
     user = User.query.get(identity2)
     print(f"with filter function:{usr.name}, using get function for primary key {user.name}")
     return f"Only filtered id's data is printed on the console:{usr.name}, primary key use get function:{user.name}"
-@app.route("/update/<id>/<name>/<role>/<email>")
+@app.route("/update/<int:id>/<name>/<role>/<email>")
 def update(id,name,role,email):
     user = User.query.get(id)
     user.name = name
@@ -43,7 +45,7 @@ def update(id,name,role,email):
     user.email = email
     db.session.commit()
     return f"Update value are {user.name}, {user.role} and {user.email}"
-@app.route("/delete/<id>")
+@app.route("/delete/<int:id>")
 def delete(id):
     user = User.query.get(id)
     db.session.delete(user)
@@ -57,6 +59,21 @@ def show_all():
 def show_f():
     user = User.query.filter(User.email.like("%gmail.com")).all()
     return render_template("index.html",user = user )
+@app.route("/show_user/<name>")
+def show_user(name):
+    user = User.query.filter(User.name.like(f"{name}%")).all()
+    return render_template("index.html",user = user)
+
+@app.route("/byorder")
+def show_order():
+    #order_by query used to arrange the order of the data(desc() is for descending order) and for ascending remove the desc() function and put only order_by(User.<attribute>) 
+    user = User.query.order_by(desc(User.id)).all()
+    return render_template("index.html",user=user)
+
+@app.route("/count")
+def aggregate():
+    user_count = User.query.count()
+    return f"Total number of users are {user_count}"
 
 if __name__=="__main__":
     with app.app_context():
