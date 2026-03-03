@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Age Check for vehicle</title>
+</head>
+<body>
+    {% if age >= 18 and age < 70 %}
+        <h5>User can drive</h5>
+    {% elif age >= 70 or age < 18 %}
+        <h5>User can't drive</h5>
+    {% else %}
+        <h5>User can't drive anyvehicle</h5>
+    {% endif %}
+</body>
+</html>

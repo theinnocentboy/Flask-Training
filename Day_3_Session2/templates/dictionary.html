@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Table</title>
+    <style>
+        table{
+            border: 2px solid black;
+            justify-content: center;
+            margin: 300px;
+            
+        }
+    </style>
+</head>
+<body>
+    <table>
+        <thread>
+            <tr>
+            <th>S.No.</th>
+            <th>Name</th>
+            <th>Role</th>
+            <th>Email</th>
+            </tr>
+        </thread>
+        <tbody>
+            {% for items in mydict %}
+            <tr>
+                <th>1</th>
+                <td>{{items['name']|title}}</td>
+                <td>{{items['role']|capitalize}}</td>
+                <td>{{items['email']}}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
