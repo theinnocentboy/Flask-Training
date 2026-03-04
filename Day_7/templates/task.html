@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>Tasks</title>
+</head>
+
+<body>
+
+<h1>Task Manager</h1>
+
+<h3>Welcome {{user.name}}</h3>
+
+<a href="/logout">Logout</a>
+
+<hr>
+
+<h3>Add Task</h3>
+
+<form action="/add_task" method="POST">
+
+<input type="text" name="title" placeholder="Title">
+
+<br><br>
+
+<textarea name="description" placeholder="Description"></textarea>
+
+<br><br>
+
+<button>Add Task</button>
+
+</form>
+
+<hr>
+
+<h3>All Tasks</h3>
+
+<table border="1">
+
+<tr>
+<th>ID</th>
+<th>Title</th>
+<th>Description</th>
+<th>User</th>
+<th>Status</th>
+<th>Action</th>
+</tr>
+
+{% for task in tasks %}
+
+<tr>
+
+<td>{{task.id}}</td>
+<td>{{task.title}}</td>
+<td>{{task.description}}</td>
+<td>{{task.user.name}}</td>
+<td>{{task.status}}</td>
+
+<td>
+
+{% if user.role == "admin" or task.user_id == user.id %}
+
+<form action="/delete_task/{{task.id}}" method="POST">
+
+<button>Delete</button>
+
+</form>
+
+{% endif %}
+
+{% if user.id == task.user_id %}
+
+<form action="/update_task/{{task.id}}" method="POST">
+
+<select name="status">
+
+<option value="pending">Pending</option>
+<option value="in_progress">In Progress</option>
+<option value="completed">Completed</option>
+
+</select>
+
+<button>Update</button>
+
+</form>
+
+{% endif %}
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+</body>
+
+</html>
